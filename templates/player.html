@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-EN">
+
+<head>
+    <title>Nemesis</title>
+</head>
+
+<body>
+
+    <a href="/station">Station</a> | Player | <a href="/room?room={{room}}">Location</a> 
+    | Rooms | <a href="/settings">Settings</a>
+
+    <h1><p>Player 1 - {{name}} "{{character}}"</p></h1>
+
+    <h2><p style="color:Tomato;">{{stat}}</p></h2>
+
+    <p>Location: <a href="/room?room={{room}}">{{room}}</a></p>
+
+    <p>Connected rooms: {{connected_rooms}}</p>
+
+    <form action="/move" method="POST">
+        <label for="room">Move to room:</label>
+        <select id="room" name="room">
+            {% for cr in rooms_list %}
+                <option>{{cr}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Action">
+    </form>
+
+    <form action="/room" method="GET">
+        <p>
+        <label for="room">Check room:</label>
+            <input name="room" type="text" value="1">
+            <input type="submit" value="See">
+        </p>
+    </form>
+
+    <p style="color:Tomato;">{{ error }}</p>
+
+
+    <pre  style="font-family:'Courier New'; font-size:12px"> {{ description }} </pre>
+    <pre  style="font-family:'Courier New'; font-size:12px"> {{ state }} </pre>
+
+</body>
+
+</html>

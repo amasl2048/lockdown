@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-EN">
+
+<head>
+    <title>Nemesis - Station</title>
+</head>
+
+<body>
+
+    <a href="/station">Station</a> | <a href="/player">Player</a> | <a href="/room?room={{room}}">Location</a> | Rooms | Settings
+
+    <form action="/person" method="POST">
+        <p>
+        <label for="name">Player1:</label>
+            <input name="name" type="text" value="Andrew">
+        <label for="color">Color:</label>
+            <input name="color" type="text" value="Blue">
+        <label for="character">Character:</label>
+        <select id="character" name="character">
+                <option>HACKER</option>
+                <option>BIOLOGIST</option>
+        </select>
+            <input type="submit" value="Set">
+        </p>
+    </form>
+
+    <p style="color:{{msg_color}};">{{msg}}</p>
+
+    <br><br>
+    <form action="/reset" method="POST">
+        <p>
+        <label for="room">Reset game:</label>
+        <input type="submit" value="Reset">
+        <p style="color:Tomato;">All data will be lost!</p>
+        </p>
+    </form>
+
+
+</body>
+
+</html>

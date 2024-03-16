@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-EN">
+
+<head>
+    <title>Nemesis - Station</title>
+</head>
+
+<body>
+
+    Station | <a href="/player">Player</a> | <a href="/room?room={{room}}">Location</a> 
+    | Rooms | <a href="/settings">Settings</a>
+
+    <h2>Burnout: {{burnout}} | Destruction: {{destruction}}</h2>
+
+    <img src={{map_png}} alt="station map" width="720" />
+
+    <p>Your location: <a href="/room?room={{room}}">{{room}}</a></p>
+
+    <p>Connected rooms: {{connected_rooms}}</p>
+
+    <form action="/move" method="POST">
+        <p>
+        <label for="room">Move to room:</label>
+        <select id="room" name="room">
+            {% for cr in rooms_list %}
+                <option>{{cr}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Action">
+        </p>
+    </form>
+
+    {% for rooms in room_info %}
+
+        <h2>Section {{loop.index}}</h2>
+
+        {% for color, num, name, effect, items, players, intruders, corridors in rooms %}
+            <h3 style="color:{{color}};"># <a href="/room?room={{num}}">{{num}}</a> - {{name}} - <span style="color: red">{{effect}}</span> - {{items}} items</h3>
+            <p style="color:{{color}};">&nbsp;&nbsp;&nbsp;&nbsp;Players: <strong>{{players}}</strong> </p>
+            <p style="color:{{color}};">&nbsp;&nbsp;&nbsp;&nbsp;Intruders: <span style="color: darkred">{{intruders}}</span></p>
+            <p style="color:{{color}};">&nbsp;&nbsp;&nbsp;&nbsp;Corridors to rooms:</p>
+            {% for route, state, remote in corridors %}
+                <p style="color:{{color}};">&nbsp;&nbsp;&nbsp;&nbsp;{{route}}: <span style="color: darkgoldenrod">{{state}}</span> -> {{remote}}</p>
+            {% endfor %}
+
+        {% endfor %}
+
+    {% endfor %}
+
+</body>
+
+</html>
