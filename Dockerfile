@@ -9,9 +9,9 @@ WORKDIR /home/app
 
 RUN mkdir -p ./static
 
-COPY ./static/*.png ./static
+COPY ./static/*.png ./static/
 COPY ./templates ./templates
-COPY ./*.py .
+COPY ./*.py ./
 
 EXPOSE 8002
 
