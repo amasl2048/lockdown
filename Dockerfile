@@ -15,4 +15,4 @@ COPY ./*.py ./
 
 EXPOSE 8002
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8002", "web_server:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8002", "start_web_server:app"]
