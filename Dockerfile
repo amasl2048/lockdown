@@ -1,6 +1,6 @@
 FROM python:3.9.10-alpine as python-flask
 
-RUN pip3 install flask gunicorn
+RUN pip3 install flask gunicorn Flask-HTTPAuth
 
 # Stage 2
 FROM python-flask
