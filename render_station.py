@@ -21,7 +21,7 @@ def section_info(station, section: tuple) -> list:
         effect = room.effect()
         items = room.items()
 
-        players = room.get_players_names()
+        players = room.get_players_characters()
         intruders = room.get_intruders_names()
 
         corridors = []
@@ -47,25 +47,29 @@ def section_info(station, section: tuple) -> list:
     return room_info
 
 
-def render_station(game, station_map):
+def render_station(user, game, station_map):
 
     station1 = game.get_station()
-    player1 = game.get_player()
+    player1 = game.get_user_player(user)
+    if not player1:
+        current_room = ""
+        rooms_list = []
+    else:
+        current_room = player1.get_location()
+        rooms_list = station1.rooms[current_room].get_connected_rooms()
 
     room_info = []
 
     for section in [CFG.SECTIONS[0]]:  #FIXME: CFG.SECTIONS
-
         room_info.append(section_info(station1, section))
 
     burnout = station1.burnout()
     destruction = station1.destruction()
 
-    current_room = player1.get_location()
-    rooms_list = station1.rooms[current_room].get_connected_rooms()
     connected_rooms = " ".join(rooms_list)
 
     return render_template("station.html",
+                            user = user,
                             room=current_room,
                             connected_rooms=connected_rooms,
                             rooms_list=rooms_list,

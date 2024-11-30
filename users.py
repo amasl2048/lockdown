@@ -1,0 +1,3 @@
+USERS = {
+    "guest": "guest"
+}

@@ -5,14 +5,21 @@ pp = pprint.PrettyPrinter(indent=4)
 from start_game import game1
 import action_move
 
-station1 = game1.get_station()
-player1 = game1.get_player()
-current_room = player1.get_location()
+from create_player import create_player
 
+name = "PLAYER"
+color = "GREEN"
+character = "PILOT"
+player = create_player(name, color, character)
+res, msg = game1.add_player(player)
+print(msg)
+
+station1 = game1.get_station()
+player1 = game1.get_player(1)
+current_room = player1.get_location()
 print("\nPlayer1:")
 player1.show()
 station1.rooms[current_room].show()
-
 
 for rm in ["1", "21", "2", "1", "17"]:
 
@@ -45,7 +52,10 @@ assert(player1.get_location() == "17")
 
 players_names = station1.rooms["17"].get_players_names()
 print(players_names)
-assert("Andrew" in players_names)
+assert(name in players_names)
 
 print("\nPlayer1:")
+print(player1.deck["discard"].cards_list())
+
 player1.show()
+station1.show_rooms()

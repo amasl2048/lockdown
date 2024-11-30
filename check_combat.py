@@ -1,6 +1,6 @@
-from room import Room
+from station import Station
 
-def in_combat(station, room):
+def in_combat(station: Station, room: str):
 
     msg = ""
     players = station.rooms[room].check_players()
@@ -10,7 +10,7 @@ def in_combat(station, room):
         for pl in station.rooms[room].players:
             if pl.is_combat():
                 pl.clear_combat()
-                msg += "Combat mode cleared.\n"
+                msg += "\nCombat mode cleared."
 
     elif players and intruders:
 
@@ -19,7 +19,7 @@ def in_combat(station, room):
             pl.combat()
         for intr in station.rooms[room].intruders:
             intr.combat()
-        msg += "Combat mode set.\n"
+        msg += "\nCombat mode set."
 
     else:
         for intr in station.rooms[room].intruders:

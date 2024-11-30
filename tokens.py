@@ -5,7 +5,7 @@ import config as CFG
 class Tokens:
 
     def __init__(self, tokens: list) -> None:
-        
+
         self.tokens = tokens
         random.shuffle(self.tokens)
 
@@ -13,23 +13,18 @@ class Tokens:
         return len(self.tokens)
 
     def shuffle(self):
-
         random.shuffle(self.tokens)
 
     def add(self, token):
-
         self.tokens.append(token)
         random.shuffle(self.tokens)
 
     def remove(self, token):
-
         self.tokens.remove(token)
 
     def get(self) -> str:
-
         t = random.choice(self.tokens)
         self.tokens.remove(t)
-
         return t
 
     def show(self):
@@ -37,7 +32,7 @@ class Tokens:
 
 if __name__ == "__main__":
 
-    t = Tokens(CFG.INTRUDERS_TOKENS)
+    t = Tokens(CFG.START_INTRUDERS_TOKENS)
     t.show()
 
     t.add("QUEEN")

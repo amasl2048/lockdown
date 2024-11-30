@@ -8,7 +8,7 @@
 <body>
 
     <a href="/station">Station</a> | <a href="/player">Player</a> | Location 
-    | Rooms | <a href="/settings">Settings</a>
+    | Rooms | <a href="/settings">Settings</a> | User: {{user}}
 
     <h1><p>Room {{room}} "{{room_name}}"</p></h1>
 
@@ -30,6 +30,19 @@
         </p>
     </form>
 
+    <form action="/melee_attack" method="POST">
+        <p>
+        <label for="alien">Melee attack:</label>
+        <select id="alien" name="alien">
+            {% for al in intruders %}
+                <option>{{al}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" id="room" name="room" value={{room}}>
+        <input type="submit" value="Action">
+        </p>
+    </form>
+
     <form action="/room" method="GET">
         <p>
         <label for="room">Check room:</label>
@@ -44,6 +57,7 @@
 
     <p>Players: {{players}}</p>
     <p>Intruders: {{intruders}}</p>
+    <p>Heavy objects: {{objects}}</p>
 
 
     <pre  style="font-family:'Courier New'; font-size:12px"> {{ description }} </pre>

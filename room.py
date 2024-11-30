@@ -2,6 +2,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 import config as CFG
+from creature import Creature
 from person import Person
 from path import Path
 
@@ -31,6 +32,7 @@ class Room:
         self.players = []
         self.intruders = []
         self.objects = []
+        self.heavy_objects = []
 
         self.path = {}             # "connected_room: str": "path_number: int"
         self.corridors = {}        # "corridor: str": "connected_room: int"
@@ -125,15 +127,24 @@ class Room:
             names.append(p.get_name())
 
         return names
+    
+    def get_players_characters(self) -> list:
+
+        characters = []
+
+        for p in self.players:
+            characters.append(p.get_character())
+
+        return characters
 
     def check_players(self) -> bool:
 
         for p in self.players:
             character = p.get_character()
-            if character in CFG.PLAYERS:
+            if character in CFG.CHARACTERS:
                 return True
 
-        return False
+        return False  # not empty
 
     def get_intruders_names(self) -> list:
 
@@ -152,8 +163,14 @@ class Room:
                 return True
 
         return False
+    
+    def get_alien_intruder(self, alien: str):
+        for each in self.intruders:
+            if alien == each.get_name():
+                return each
+        return
 
-    def check_room(self) -> (bool, str):
+    def check_room(self) -> tuple[bool, str]:
 
         explored = self.state["open"]
         if explored:
@@ -163,24 +180,26 @@ class Room:
 
         return explored, name
 
-    def enter_room(self, person: Person):
+    def enter_room(self, creature: Creature):
 
-        character = person.get_character()
+        character = creature.get_character()
 
-        if character in CFG.PLAYERS:
-            self.players.append(person)
+        if character in CFG.CHARACTERS:
+            self.players.append(creature)
         elif character in CFG.INTRUDERS:
-            self.intruders.append(person)
+            self.intruders.append(creature)
 
-    def exit_room(self, person: Person):
+    def exit_room(self, creature: Creature):
 
-        character = person.get_character()
+        character = creature.get_character()
 
-        if character in CFG.PLAYERS:
-            self.players.remove(person)
+        if character in CFG.CHARACTERS:
+            self.players.remove(creature)
         elif character in CFG.INTRUDERS:
-            self.intruders.remove(person)           #FIXME
+            self.intruders.remove(creature)           #FIXME
 
+    def corpse(self, character: str):
+        self.heavy_objects.append(character + "-CORPSE")
 
     def show(self):
         pp.pprint(self.description)
@@ -191,7 +210,10 @@ class Room:
         pp.pprint(self.corridors)
 
         print("Players:")
-        print(self.get_players_names())
+        print(self.get_players_characters())
 
         print("Intruders:")
         print(self.get_intruders_names())
+
+        print("Heavy Objects:")
+        print(",".join(self.heavy_objects))

@@ -1,3 +1,6 @@
+import config as CFG
 from game import Game
 
-game1 = Game()
+players = CFG.PLAYERS
+
+game1 = Game(players)

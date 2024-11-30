@@ -3,7 +3,16 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 from start_game import game1
-player1 = game1.get_player()
+from create_player import create_player
+
+name = "TEST"
+color = "GREEN"
+character = "PILOT"
+player = create_player(name, color, character)
+res, msg = game1.add_player(player)
+print(msg)
+
+player1 = game1.get_player(1)
 
 station1 = game1.get_station()
 

@@ -7,20 +7,30 @@
 
 <body>
 
-    <a href="/station">Station</a> | <a href="/player">Player</a> | <a href="/room?room={{room}}">Location</a> | Rooms | Settings
+    <a href="/station">Station</a> | <a href="/player">Player</a> |
+    <a href="/room?room={{room}}">Location</a> | Rooms | Settings | User: {{user}}
 
-    <form action="/person" method="POST">
+
+    <form action="/create_player" method="POST">
         <p>
-        <label for="name">Player1:</label>
-            <input name="name" type="text" value="Andrew">
-        <label for="color">Color:</label>
-            <input name="color" type="text" value="Blue">
         <label for="character">Character:</label>
-        <select id="character" name="character">
-                <option>HACKER</option>
-                <option>BIOLOGIST</option>
+            <select id="character" name="character">
+                <option>PILOT</option>
+                <option>CAPITAN</option>
+                <option>SCIENTIST</option>
+                <option>SCOUT</option>
+                <option>SOLDIER</option>
+                <option>MECHANIC</option>
+            </select>
+
+        <label for="color">Color:</label>
+        <select id="color" name="color">
+            <option>GREEN</option>
+            <option>RED</option>
+            <option>BLUE</option>
         </select>
-            <input type="submit" value="Set">
+        
+        <input type="submit" value="Create">
         </p>
     </form>
 

@@ -1,45 +1,48 @@
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
+import config as CFG
+from creature import Creature
+from deck import Deck
 
-from config import PLAYERS
+class Person(Creature):
 
-class Person:
-
-    def __init__(self, name, color, character, room_id: str, knowledge: int):
+    def __init__(self, name, color, character, room_id: str):
 
         self.description = {
             "name": name,
             "color": color,
-            "character": character
+            "character": character,
+            "number": 0
             }
 
         self.state = {
             "pass": False,
             "combat": False,
             "room_id": room_id,
-            "knowledge": knowledge,
+            "signal": False,
             "slime": False,
             "infected": False,
-            "light_wound": 0,
-            "serious_wounds": 0
+            "light_wounds": 0,
+            "serious_wounds": 0,
+            "dressed_wounds": 0,
+            "alive": True
             }
 
         self.hands = {
-            "left_hand": list(),
-            "right_hand": list(),
+            "left_hand": None,
+            "right_hand": None,
         }
 
         self.deck = {
-            "action_deck": set(),
-            "discard_deck": set(),
-            "hand": set()
+            "action": Deck(),
+            "discard": Deck(),
+            "hand": Deck()
             }
 
         self.inventory = []
+        self.mission_code = None
 
     def set_person(self, name: str, color: str, character: str) -> bool:
 
-        if not character in PLAYERS:
+        if not character in CFG.CHARACTERS:
             return False
 
         self.description["name"] = name
@@ -60,63 +63,73 @@ class Person:
 
         return " | ".join(stat)
 
-    def get_location(self) -> str:
+    def check_hand(self) -> int:
+        return self.deck["hand"].number()
 
-        return self.state["room_id"]
+    def get_color(self) -> str:
+        return self.description["color"]
+    
+    def get_light_wounds(self) -> int:
+        return self.state["light_wounds"]
+    
+    def get_serious_wounds(self) -> int:
+        return self.state["serious_wounds"]
 
-    def set_location(self, room: str) -> str:
-
-        self.state["room_id"] = room
-
-    def get_name(self) -> str:
-
-        return self.description["name"]
-
-    def get_character(self) -> str:
-
-        return self.description["character"]
 
     def light_wound(self):
 
-        if self.state["light_wound"] < 2:
-            self.state["light_wound"] += 1
+        if self.state["serious_wounds"] == 3:
+            self.state["alive"] = False
 
+        if self.state["light_wounds"] < 2:
+            self.state["light_wounds"] += 1
         else:
             self.state["serious_wounds"] += 1
-            self.state["light_wound"] = 0
+            self.state["light_wounds"] = 0
+
+        if self.state["serious_wounds"] > 3:
+            self.state["alive"] = False
+
+
+    def serious_wound(self):
+        self.state["serious_wounds"] += 1
+        if self.state["serious_wounds"] > 3:
+            self.state["alive"] = False
+
+
+    def dress_wound(self) -> bool:
+        if self.state["dressed_wounds"] >= self.state["serious_wounds"]:
+            return False
+        self.state["dressed_wounds"] += 1
+        return True
+
+    def check_wound_effect(self) -> bool:
+        if self.state["dressed_wounds"] < self.state["serious_wounds"]:
+            return True
+        return False  # not affected
+    
+    def heal_light_wound(self):
+        if self.state["light_wounds"] == 1 \
+            or self.state["light_wounds"] == 2:
+            self.state["light_wounds"] -= 1
+
+    def heal_dressed_wound(self):
+        if self.state["dressed_wounds"] > 0:
+            self.state["serious_wounds"] -= 1
+            self.state["dressed_wounds"] -= 1
+
 
     def slime(self):
-
         self.state["slime"] = True
 
     def clear_slime(self):
-
         self.state["slime"] = False
 
-    def infected(self):
+    def check_infected(self):
+        return self.state["infected"]
 
+    def infected(self):
         self.state["infected"] = True
 
     def clear_infection(self):
-
         self.state["infected"] = False
-
-    def combat(self):
-
-        self.state["combat"] = True
-
-    def clear_combat(self):
-
-        self.state["combat"] = False
-
-    def is_combat(self) -> bool:
-
-        if self.state["combat"]:
-            return True
-
-        return False
-
-
-    def show(self):
-        pp.pprint(self.description)
-        pp.pprint(self.state)
